@@ -38,7 +38,7 @@ public class UnittecLoginOA {
 		;
 	}
 
-	String url = "http://ucenter.unittec.com/cas/login?service=http%3A%2F%2Foa.unittec.com%2Faccounts%2Flogin%2F%3Fnext%3D%252F";
+	String url = "http://ucenter.unittec.com/cas/login?service=http://oa.unittec.com/accounts/login/?next=%2Fdocument%2Fhome%2F";
 
 	public void init() {
 		httpClient = new HttpClient();
@@ -50,6 +50,8 @@ public class UnittecLoginOA {
 		System.out.println(checkCodeValue);
 
 		GetMethod getMethod1 = new GetMethod(checkCodeURL);
+		getMethod1.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:66.0) Gecko/20100101 Firefox/66.0");
+		getMethod1.setRequestHeader("Cookie", CommonCookie);
 		try {
 			// 设置HttpClient接收Cookie
 			httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
@@ -84,7 +86,7 @@ public class UnittecLoginOA {
 		StringBuffer response = null;
 		try {
 			GetMethod getMethod = new GetMethod(url);
-			
+			getMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:66.0) Gecko/20100101 Firefox/66.0");
 			// 设置HttpClient接收Cookie
 			httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
 			httpClient.executeMethod(getMethod);
@@ -157,13 +159,14 @@ public class UnittecLoginOA {
 	// 模拟登录
 	public void logo(String uu) {
 
-		String csrfmiddlewaretoken = CommonCookie;
-
+		System.out.println(CommonCookie + " CommonCookie ");
+		String csrfmiddlewaretoken = CommonCookie.substring(CommonCookie.indexOf("=") + 1, CommonCookie.length());
+		
 		String next = "";
 
-		String username = "zhangnie";
+		String username = "";
 
-		String password = "ZN0816";
+		String password = "";
 
 		String captcha_0 = checkCodeValue;
 
@@ -174,9 +177,9 @@ public class UnittecLoginOA {
 		PostMethod postMethod = new PostMethod(url);
 		
 		// 设置相同的cookie
-		postMethod.setRequestHeader("Cookie", csrfmiddlewaretoken);
+		postMethod.setRequestHeader("Cookie", CommonCookie);
 //		postMethod.setRequestHeader("Host", "ucenter.unittec.com");
-		postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36");
+		postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:66.0) Gecko/20100101 Firefox/66.0");
 //		postMethod.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 //		postMethod.setRequestHeader("Accept-Language", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
 //		postMethod.setRequestHeader("Referer", "http://ucenter.unittec.com/cas/login?service=http%3A%2F%2Foa.unittec.com%2Faccounts%2Flogin%2F%3Fnext%3D%252Fdocument%252Fhome%252F");
@@ -193,6 +196,8 @@ public class UnittecLoginOA {
 ////						new NameValuePair("remember", remember)
 //		};
 //		postMethod.setRequestBody(data);
+		
+		
 		Part[] parts = {
 			      new StringPart("csrfmiddlewaretoken", csrfmiddlewaretoken),
 			      new StringPart("next", next),
@@ -216,7 +221,9 @@ public class UnittecLoginOA {
 				while ((inputLine = in.readLine()) != null) {
 					response.append(inputLine + "\r\n");
 				}
+				System.out.println("----------------------------------");
 				System.out.println(response.toString());
+				System.out.println("----------------------------------");
 				in.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
