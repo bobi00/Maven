@@ -9,6 +9,9 @@ import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.maven.bobi.mail.SendEmail;
+
 import oa.unittec.WeekDay;
 
 public class PunchMain {
@@ -67,11 +70,13 @@ public class PunchMain {
 				
 				if(morningDate != null && times.contains(morningDate)) {
 					if(status != null && status.contentEquals("0")) {
+						new SendEmail().sendMail("早上" ,  morningDate);
 						log.info("早上打卡成功：" + time);
 						runbat();
 					}
 				} else if (nightDate != null && times.contains(nightDate)) {
 					if(status != null && status.equals("0")) {
+						new SendEmail().sendMail("晚上" , nightDate );
 						log.info("晚上打卡成功：" + time);
 						runbat();
 					}
