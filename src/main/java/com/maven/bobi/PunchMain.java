@@ -7,11 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import oa.unittec.WeekDay;
 
 public class PunchMain {
 	
-//	private Logger logger = new Logger();
+	private Log log = LogFactory.getLog(PunchMain.class);
 	
 	private String status ;
 	
@@ -20,11 +22,12 @@ public class PunchMain {
 	private String nightDate;
 	
 	public static void main(String[] args) {
-//		new PunchMain().logo();
-		new PunchMain().runbat();
+		new PunchMain().logo();
+//		new PunchMain().runbat();
 	}
 	
 	public void logo() {
+		log.info("程序开始运行");
 		while(true) {
 			try {
 				Date date = new Date();
@@ -36,7 +39,6 @@ public class PunchMain {
 				String times = realtime.format(date);
 //				System.out.println(time);
 //				System.out.println(times);
-				
 				if(times.contains("08:00:00")) {
 					//动态日期URL
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
@@ -57,20 +59,20 @@ public class PunchMain {
 					int nightSecond = random.nextInt(50) + 10;
 					nightDate = "19:" + nightMinute + ":" + nightSecond;
 					
-					System.out.println("staus: " + status);
-					System.out.println("morningDate: " + morningDate);
-					System.out.println("nightDate: " + nightDate);
+					log.info("staus: " + status);
+					log.info("morningDate: " + morningDate);
+					log.info("nightDate: " + nightDate);
 				}
 				
 				
 				if(morningDate != null && times.contains(morningDate)) {
 					if(status != null && status.contentEquals("0")) {
-						System.out.println("早上打卡成功" + time);
+						log.info("早上打卡成功：" + time);
 						runbat();
 					}
 				} else if (nightDate != null && times.contains(nightDate)) {
 					if(status != null && status.equals("0")) {
-						System.out.println("晚上打卡成功" + time);
+						log.info("晚上打卡成功：" + time);
 						runbat();
 					}
 				}
@@ -84,7 +86,8 @@ public class PunchMain {
 	public void runbat() {
 		
 		URL  path = this.getClass().getClassLoader().getResource("punch.bat");
-		System.out.println(path.getPath());
+		log.info(path.getPath());
+//		System.out.println(path.getPath());
 		String cmd = "cmd /k start " + path.getPath().substring(1, path.getPath().length());// pass
 //		String cmd = "cmd /k start " + System.getProperty("user.dir") + "\\src\\main\\resources\\punch.bat";// pass
 		try {
