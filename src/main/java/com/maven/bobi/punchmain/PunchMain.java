@@ -1,4 +1,4 @@
-package com.maven.bobi;
+package com.maven.bobi.punchmain;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,29 +12,27 @@ import org.apache.commons.logging.LogFactory;
 
 import com.maven.bobi.mail.SendEmail;
 
-import oa.unittec.WeekDay;
-
 public class PunchMain {
-	
+
 	private Log log = LogFactory.getLog(PunchMain.class);
-	
+
 	private String status ;
-	
+
 	private String morningDate ;
-	
+
 	private String nightDate;
-	
+
 	public static void main(String[] args) {
 		new PunchMain().logo();
 //		new PunchMain().runbat();
 	}
-	
+
 	public void logo() {
 		log.info("程序开始运行");
 		while(true) {
 			try {
 				Date date = new Date();
-				DateFormat df4 = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL); 
+				DateFormat df4 = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL);
 				String time = df4.format(date);
 //				DateFormat df7 = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM);
 //				String times = df7.format(date);
@@ -48,26 +46,26 @@ public class PunchMain {
 					String dateString = formatter.format(date);
 					String url = "http://tool.bitefu.net/jiari/?d=" + dateString;
 					status = new WeekDay().weekday(url);
-					
+
 					//早上随机时间
 					Random random = new Random();
 					int morningMinute = random.nextInt(20) + 20;
 					int morningSecond = random.nextInt(50) + 10;
-					
-					
-					
+
+
+
 					morningDate = "08:" + morningMinute + ":" + morningSecond;
-					
+
 					int nightMinute = random.nextInt(10) + 10;
 					int nightSecond = random.nextInt(50) + 10;
 					nightDate = "19:" + nightMinute + ":" + nightSecond;
-					
+
 					log.info("staus: " + status);
 					log.info("morningDate: " + morningDate);
 					log.info("nightDate: " + nightDate);
 				}
-				
-				
+
+
 				if(morningDate != null && times.contains(morningDate)) {
 					if(status != null && status.contentEquals("0")) {
 						new SendEmail().sendMail("早上" ,  morningDate);
@@ -87,9 +85,9 @@ public class PunchMain {
 			}
 		}
 	}
-	
+
 	public void runbat() {
-		
+
 		URL  path = this.getClass().getClassLoader().getResource("punch.bat");
 		log.info(path.getPath());
 //		System.out.println(path.getPath());
@@ -106,12 +104,12 @@ public class PunchMain {
 //			ps.waitFor();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} 
+		}
 //		catch (InterruptedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		System.out.println("punch success！！！");
 	}
-	
+
 }

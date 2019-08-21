@@ -17,7 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class SendEmail {
-	
+
 	private Log log = LogFactory.getLog(SendEmail.class);
 
 	public void sendMail(String str, String time) {
@@ -41,7 +41,7 @@ public class SendEmail {
 
 		// 授权码
 		final String key = pro.getProperty("key").trim();
-		
+
 		// 指定发送邮件的主机为 smtp.qq.com
 		String host = "smtp.qq.com"; // QQ 邮件服务器
 
@@ -83,5 +83,9 @@ public class SendEmail {
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		new SendEmail().sendMail("晚上" , "test" );
 	}
 }
